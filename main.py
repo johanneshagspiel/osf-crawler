@@ -1,5 +1,6 @@
 import collections
 from random import uniform
+from time import sleep
 
 import winsound
 from bs4 import BeautifulSoup, Comment
@@ -250,16 +251,43 @@ async def main(search_term):
             print(f"Finished crawling osf.io for the term: {search_term}")
             break
         else:
-            await page.goto(f'https://osf.io/search/?q={search_term}&page={next_page_number}')
+            get_next_page = True
+            while get_next_page:
+
+                try:
+                    random_wait_time = uniform(1.0, 5.0)
+                    sleep(random_wait_time)
+
+                    print("Before")
+                    response = await page.goto(f'https://osf.io/search/?q={search_term}&page={next_page_number}')
+                    print("After")
+
+                    status_code = response.headers["status"]
+                    while status_code != '200':
+                        wrong_status_code_message = f"Error - response status code: {status_code}. Will try again after short delay."
+                        print(wrong_status_code_message)
+
+                        random_wait_time = uniform(1.0, 5.0)
+                        sleep(random_wait_time)
+
+                        print("Before")
+                        response = await page.goto(f'https://osf.io/search/?q={search_term}&page={next_page_number}')
+                        print("After")
+
+                        status_code = response.headers["status"]
+
+                    get_next_page = False
+                except Exception as e:
+                    print(e)
+                    random_wait_time = uniform(1.0, 5.0)
+                    sleep(random_wait_time)
+
             html = await page.content()
             soup = BeautifulSoup(html, 'html.parser')
             body = soup.body
             for element in body(text=lambda text: isinstance(text, Comment)):
                 element.extract()
 
-            random_wait_time = uniform(1.0, 5.0)
-            await asyncio.sleep(random_wait_time)
-
     create_information(searchResultList, search_term)
 
-asyncio.get_event_loop().run_until_complete(main("placebo"))
+asyncio.get_event_loop().run_until_complete(main("depression"))
