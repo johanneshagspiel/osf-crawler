@@ -3,7 +3,7 @@ from time import sleep
 from bs4 import BeautifulSoup, Comment
 from pyppeteer import launch
 
-from src.Search_Result import Search_Result
+from src.Entities.Search_Result import Search_Result
 
 class OSF_Crawler:
 

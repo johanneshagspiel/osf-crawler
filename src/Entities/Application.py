@@ -1,6 +1,6 @@
 import asyncio
-from src.Information_Creator import Information_Creator
-from src.OSF_Crawler import OSF_Crawler
+from src.Entities.Information_Creator import Information_Creator
+from src.Entities.OSF_Crawler import OSF_Crawler
 
 
 
