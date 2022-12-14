@@ -1,4 +1,5 @@
 import collections
+from random import uniform
 
 import winsound
 from bs4 import BeautifulSoup, Comment
@@ -8,7 +9,7 @@ from pyppeteer import launch
 import asyncio
 import spacy
 
-from Search_Result import Search_Result
+from src.Search_Result import Search_Result
 
 
 def create_information(searchResultList, search_term):
@@ -181,7 +182,12 @@ async def main(search_term):
 
     searchResultList = []
 
-    await page.goto(f'https://osf.io/search/?q={search_term}&page=1')
+    response = await page.goto(f'https://osf.io/search/?q={search_term}&page=1')
+    status_code = response.headers["status"]
+
+    if status_code != '200':
+        print(response.headers)
+
     html = await page.content()
     soup = BeautifulSoup(html, 'html.parser')
     body = soup.body
@@ -250,6 +256,9 @@ async def main(search_term):
             body = soup.body
             for element in body(text=lambda text: isinstance(text, Comment)):
                 element.extract()
+
+            random_wait_time = uniform(1.0, 5.0)
+            await asyncio.sleep(random_wait_time)
 
     create_information(searchResultList, search_term)
 
