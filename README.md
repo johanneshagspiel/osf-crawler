@@ -12,9 +12,9 @@ This repository contains a crawler for the [Open Science Framework](https://osf.
 ## Features
 
 This crawler:
-- automatically downloads information about research on a topic from the [Open Science Framework](https://osf.io/) website
-- uses the natural language processing library [spaCy](https://spacy.io/) to perform common data cleanup steps such as getting rid of stop words and lemmatizing the words
-- outputs the most frequent tags as well as words used in the titles and description in the form of an Excel file 
+- automatically downloads information about registered research projects or preprints from the [Open Science Framework](https://osf.io/) website either by crawling the website or by interacting with the official API. It then stores the information in a [MongoDB](https://www.mongodb.com/) database.
+- uses the natural language processing library [spaCy](https://spacy.io/) to perform common data cleanup steps such as getting rid of stop words and lemmatizing the words and then the LDA algorithm of the topic modelling framework [gensim](https://radimrehurek.com/gensim/) to determine which topics were covered by the downloaded research.
+- outputs the most frequent tags, subjects as well as words used in the titles and descriptions in the form of an Excel file as well as the topics found by gensim and the corresponding coherence score of the LDA algorithm.
 
 ## Tools
 
@@ -26,7 +26,9 @@ This crawler:
 | Browser automation library | [Pyppeteer](https://miyakogi.github.io/pyppeteer/)                      |
 | NLP library                | [spaCy](https://spacy.io/)                                              |
 | Output generator           | [OpenPyXL](https://openpyxl.readthedocs.io/en/stable/)                  |
-| Asynchronous framework    | [asyncio](https://docs.python.org/3/library/asyncio.html)                  |
+| Asynchronous framework     | [asyncio](https://docs.python.org/3/library/asyncio.html)               |
+| Topic modelling framework  | [gensim](https://radimrehurek.com/gensim/)                              |
+| NoSQL database             | [MongoDB](https://www.mongodb.com/)                              |
 
 ## Licence
 

@@ -3,7 +3,7 @@ from time import sleep
 from bs4 import BeautifulSoup, Comment
 from pyppeteer import launch
 
-from src.Entities.Search_Result import Search_Result
+from src.Entities.Results.Search_Result_Crawler import Search_Result
 
 class OSF_Crawler:
 
@@ -16,7 +16,7 @@ class OSF_Crawler:
 
         searchResultList = []
 
-        response = await page.goto(f'https://osf.io/search/?q={search_term}&page=1')
+        response = await page.goto(f'https://osf.io/search/?q={search_term}&filter=project&page=1')
         status_code = response.headers["status"]
 
         if status_code != '200':
@@ -104,7 +104,7 @@ class OSF_Crawler:
                             sleep(random_wait_time)
 
                             print("Before")
-                            response = await page.goto(f'https://osf.io/search/?q={search_term}&page={next_page_number}')
+                            response = await page.goto(f'https://osf.io/search/?q={search_term}&filter=project&page={next_page_number}')
                             print("After")
 
                             status_code = response.headers["status"]
